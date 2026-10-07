@@ -1,0 +1,19 @@
+---
+import { bio, profile } from '../data/profile';
+import type { Locale } from '../lib/i18n';
+interface Props { locale: Locale; detailed?: boolean }
+const { locale, detailed = false } = Astro.props;
+const b = bio[locale];
+const dates = new Intl.DateTimeFormat(locale === 'en' ? 'en' : 'zh-CN', { dateStyle: 'medium', timeZone: 'UTC' });
+const exactPeriod = `${dates.format(new Date(`${profile.internship.start}T00:00:00Z`))} – ${dates.format(new Date(`${profile.internship.end}T00:00:00Z`))}`;
+---
+<article class="experience-item">
+  <div class="experience-date"><time datetime={profile.internship.start} title={exactPeriod}>{b.internshipPeriod}</time><span>{locale === 'en' ? 'Internship' : '实习'}</span></div>
+  <div>
+    <h3>{b.internshipTitle}</h3>
+    <p class="experience-company">{b.company}</p>
+    <p class="experience-department">{b.department}</p>
+    <p class="experience-summary">{b.internshipSummary}</p>
+    {detailed && <ul class="experience-points">{b.internshipPoints.map((point) => <li>{point}</li>)}</ul>}
+  </div>
+</article>

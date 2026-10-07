@@ -1,0 +1,78 @@
+---
+import '../styles/global.css';
+import { profile } from '../data/profile';
+import { pathFor, otherLocale, ui, type Locale } from '../lib/i18n';
+import { getWriting } from '../lib/content';
+
+interface Props {
+  locale: Locale;
+  title?: string;
+  description: string;
+  active?: 'home' | 'research' | 'projects' | 'writing' | 'about';
+  alternateHref?: string;
+  isNotFound?: boolean;
+}
+const { locale, title, description, active, alternateHref, isNotFound = false } = Astro.props;
+const t = ui[locale];
+const name = locale === 'en' ? profile.nameEn : profile.name;
+const pageTitle = title ? `${title} · ${name}` : `${name} · Computer Science`;
+const currentPath = Astro.url.pathname.replace(/^\/zh(?=\/|$)/, '').replace(/^\/+|\/+$/g, '');
+const alternate = alternateHref ?? pathFor(otherLocale(locale), currentPath);
+const hasWriting = (await getWriting(locale)).length > 0;
+const navigation = [
+  { key: 'home', label: t.home, path: '' },
+  { key: 'research', label: t.interests, path: 'research' },
+  { key: 'projects', label: t.projects, path: 'projects' },
+  ...(hasWriting ? [{ key: 'writing', label: t.writing, path: 'writing' }] : []),
+  { key: 'about', label: t.about, path: 'about' },
+];
+const site = Astro.site ?? new URL('http://localhost:4321');
+const canonical = new URL(Astro.url.pathname, site);
+const english = locale === 'en' ? canonical : new URL(alternate, site);
+const chinese = locale === 'zh' ? canonical : new URL(alternate, site);
+const isPublicBuild = !['localhost', '127.0.0.1'].includes(site.hostname);
+---
+<!doctype html>
+<html lang={locale === 'en' ? 'en' : 'zh-CN'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fafaf7" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={isPublicBuild && !isNotFound ? 'index,follow' : 'noindex,nofollow'} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    {!isNotFound && <>
+      <link rel="alternate" hreflang="en" href={english} />
+      <link rel="alternate" hreflang="zh-CN" href={chinese} />
+      <link rel="alternate" hreflang="x-default" href={english} />
+    </>}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={locale === 'en' ? 'en_US' : 'zh_CN'} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t.skip}</a>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="wordmark" href={pathFor(locale)} aria-label={name}>
+          <span class="wordmark-name">{locale === 'en' ? 'Song Zheming' : '宋哲铭'}</span>
+        </a>
+        <div class="header-navigation">
+          <nav aria-label={locale === 'en' ? 'Main navigation' : '主导航'}>
+            {navigation.map((item) => <a href={pathFor(locale, item.path)} aria-current={active === item.key ? Astro.url.pathname === pathFor(locale, item.path) ? 'page' : 'location' : undefined}>{item.label}</a>)}
+          </nav>
+          {!isNotFound && <a class="language-link" href={alternate} lang={locale === 'en' ? 'zh-CN' : 'en'} aria-label={t.switchLabel}>{t.switchLanguage}</a>}
+        </div>
+      </header>
+      <main id="main" tabindex="-1"><slot /></main>
+      <footer class="site-footer">
+        <div><span class="footer-name">{t.copyright}</span><p>{t.footer}</p></div>
+        <div class="footer-links"><a href={`mailto:${profile.emails[0]}`}>{t.email}</a><a href={profile.github}>GitHub <span aria-hidden="true">↗</span></a><a href={pathFor(locale, 'about')}>{t.about}</a></div>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { pathFor, ui, type Locale } from '../lib/i18n';
+interface Props { entry: CollectionEntry<'projects'>; locale: Locale }
+const { entry, locale } = Astro.props;
+const data = entry.data;
+const t = ui[locale];
+---
+<article class="project-item">
+  <div class="project-item-body">
+    <p class="project-meta">{data.kind}<span aria-hidden="true"> · </span>{data.role}</p>
+    <h3><a href={pathFor(locale, `projects/${data.slug}`)}>{data.title}</a></h3>
+    <p class="project-summary">{data.summary}</p>
+    <div class="project-resources">
+      <a href={pathFor(locale, `projects/${data.slug}`)}>{t.project} <span aria-hidden="true">↗</span></a>
+      {data.links.map((link) => <a href={link.url}>{t[link.kind]} <span aria-hidden="true">↗</span></a>)}
+    </div>
+  </div>
+</article>

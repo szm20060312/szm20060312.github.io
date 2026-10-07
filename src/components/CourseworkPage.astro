@@ -1,0 +1,10 @@
+---
+import { coursework } from '../data/coursework';
+import { pathFor, type Locale } from '../lib/i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+---
+<a class="back-link" href={pathFor(locale, 'about#coursework')}><span aria-hidden="true">← </span>{locale === 'en' ? 'Back to academic background' : '返回课程背景'}</a>
+<header class="page-intro"><p class="eyebrow">{locale === 'en' ? 'Undergraduate studies' : '本科阶段学习'}</p><h1>{locale === 'en' ? 'Coursework' : '本科课程'}</h1><p>{locale === 'en' ? 'Course selections across my Computer Science degree, including mathematical foundations, software and systems, and general education.' : '按学期整理本科阶段的选科记录，涵盖数学基础、软件与计算机系统，以及通识课程。'}</p></header>
+<div class="semester-index" aria-label={locale === 'en' ? 'Semesters' : '学期导航'}>{coursework.map((semester) => <a href={`#term-${semester.id}`}>{semester.title[locale]}</a>)}</div>
+{coursework.map((semester) => <section class="semester-section" id={`term-${semester.id}`}><div class="semester-heading"><h2>{semester.title[locale]}</h2><span class:list={['semester-status', { 'semester-current': semester.current }]}>{semester.current ? locale === 'en' ? 'In progress' : '正在修读' : locale === 'en' ? 'Earlier course records' : '过往选科记录'}</span></div><table class="course-table"><thead><tr><th scope="col">{locale === 'en' ? 'Course code' : '课程代码'}</th><th scope="col">{locale === 'en' ? 'Course title' : '课程名称'}</th></tr></thead><tbody>{semester.courses.map((course) => <tr><td class="course-code">{course.code}</td><td>{course.title[locale]}</td></tr>)}</tbody></table></section>)}

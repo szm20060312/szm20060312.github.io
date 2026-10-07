@@ -1,0 +1,62 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import HomePage from '../components/HomePage.astro';
+import ResearchPage from '../components/ResearchPage.astro';
+import ProjectsPage from '../components/ProjectsPage.astro';
+import AboutPage from '../components/AboutPage.astro';
+import CourseworkPage from '../components/CourseworkPage.astro';
+import { getProjects, getWriting } from '../lib/content';
+import { locales, pathFor, otherLocale, ui, type Locale } from '../lib/i18n';
+import { bio } from '../data/profile';
+
+type PageKind = 'home' | 'research' | 'projects' | 'about' | 'coursework' | 'project' | 'writing' | 'article';
+interface Props { locale: Locale; kind: PageKind; entry?: CollectionEntry<'projects'>; article?: CollectionEntry<'writing'>; alternateHref?: string }
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  const writing = await getWriting();
+  const routes: { params: { path: string | undefined }; props: Props }[] = [];
+  for (const locale of locales) {
+    for (const kind of ['home', 'research', 'projects', 'about', 'coursework'] as const) {
+      const route = pathFor(locale, kind === 'home' ? '' : kind).replace(/^\/+|\/+$/g, '');
+      routes.push({ params: { path: route || undefined }, props: { locale, kind } });
+    }
+    for (const entry of projects.filter((entry) => entry.data.locale === locale)) {
+      const counterpart = projects.find((other) => other.data.translationKey === entry.data.translationKey && other.data.locale === otherLocale(locale))!;
+      routes.push({ params: { path: pathFor(locale, `projects/${entry.data.slug}`).replace(/^\/+|\/+$/g, '') }, props: { locale, kind: 'project', entry, alternateHref: pathFor(otherLocale(locale), `projects/${counterpart.data.slug}`) } });
+    }
+    if (writing.some((entry) => entry.data.locale === locale)) {
+      routes.push({ params: { path: pathFor(locale, 'writing').replace(/^\/+|\/+$/g, '') }, props: { locale, kind: 'writing' } });
+    }
+    for (const article of writing.filter((entry) => entry.data.locale === locale)) {
+      const counterpart = writing.find((other) => other.data.translationKey === article.data.translationKey && other.data.locale === otherLocale(locale))!;
+      routes.push({ params: { path: pathFor(locale, `writing/${article.data.slug}`).replace(/^\/+|\/+$/g, '') }, props: { locale, kind: 'article', article, alternateHref: pathFor(otherLocale(locale), `writing/${counterpart.data.slug}`) } });
+    }
+  }
+  return routes;
+}
+
+const { locale, kind, entry, article, alternateHref } = Astro.props;
+const t = ui[locale];
+const title = kind === 'home' ? undefined : entry?.data.title ?? article?.data.title ?? ({ research: t.researchInterests, projects: t.projects, about: t.about, writing: t.writing, coursework: locale === 'en' ? 'Coursework' : '本科课程' } as Record<string, string>)[kind];
+const description = entry?.data.summary ?? article?.data.summary ?? bio[locale].introduction;
+const active = kind === 'project' ? 'projects' : kind === 'article' ? 'writing' : kind === 'coursework' ? 'about' : kind;
+const rendered = entry ? await render(entry) : article ? await render(article) : undefined;
+const Content = rendered?.Content;
+const articleHeadings = rendered?.headings ?? [];
+---
+<SiteLayout locale={locale} title={title} description={description} active={active} alternateHref={alternateHref}>
+  {kind === 'home' && <HomePage locale={locale} />}
+  {kind === 'research' && <ResearchPage locale={locale} />}
+  {kind === 'projects' && <ProjectsPage locale={locale} entries={await getProjects(locale)} />}
+  {kind === 'about' && <AboutPage locale={locale} />}
+  {kind === 'coursework' && <CourseworkPage locale={locale} />}
+  {kind === 'project' && entry && <>
+    <a class="back-link" href={pathFor(locale, 'projects')}><span aria-hidden="true">← </span>{t.backProjects}</a>
+    <header class="project-detail-header"><div><p class="eyebrow">{entry.data.kind} · {entry.data.role}</p><h1>{entry.data.title}</h1><p>{entry.data.summary}</p><div class="project-resources">{entry.data.links.map((link) => <a href={link.url}>{t[link.kind]} <span aria-hidden="true">↗</span></a>)}</div></div></header>
+    <div class="detail-grid"><article class="prose">{Content && <Content />}</article><aside class="project-facts"><h2>{t.technologies}</h2><ul>{entry.data.tags.map((tag) => <li>{tag}</li>)}</ul><h2>{t.sources}</h2><a href={entry.data.source}>{locale === 'en' ? 'Repository documentation' : '仓库说明'} <span aria-hidden="true">↗</span></a></aside></div>
+  </>}
+  {kind === 'writing' && <><header class="page-intro"><p class="eyebrow">{locale === 'en' ? 'Notes & reflections' : '笔记与思考'}</p><h1>{t.writing}</h1></header><ul class="writing-list">{(await getWriting(locale)).map((item) => <li><time datetime={item.data.date}>{item.data.date}</time><div><a href={pathFor(locale, `writing/${item.data.slug}`)}>{item.data.title}</a><p>{item.data.summary}</p></div></li>)}</ul></>}
+  {kind === 'article' && article && <><a class="back-link" href={pathFor(locale, 'writing')}>← {t.backWriting}</a><header class="page-intro"><p class="eyebrow">{article.data.type} · <time datetime={article.data.date}>{article.data.date}</time></p><h1>{article.data.title}</h1><p>{article.data.summary}</p></header>{articleHeadings.length > 3 && <nav class="article-toc" aria-label={locale === 'en' ? 'On this page' : '文章目录'}>{articleHeadings.filter((heading) => heading.depth === 2).map((heading) => <a href={`#${heading.slug}`}>{heading.text}</a>)}</nav>}<article class="prose article-prose">{Content && <Content />}</article></>}
+</SiteLayout>

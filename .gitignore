@@ -1,0 +1,14 @@
+node_modules/
+.astro/
+dist/
+.env
+.env.*
+!.env.example
+.DS_Store
+tmp/
+output/
+playwright-report/
+
+# Local planning and source verification notes
+/开发文档.md
+/验证记录.md

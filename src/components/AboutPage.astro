@@ -1,0 +1,16 @@
+---
+import { bio, profile } from '../data/profile';
+import { ui, pathFor, type Locale } from '../lib/i18n';
+import SectionHeading from './SectionHeading.astro';
+import Experience from './Experience.astro';
+import CourseworkSummary from './CourseworkSummary.astro';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const b = bio[locale];
+const t = ui[locale];
+---
+<header class="page-intro"><p class="eyebrow">{locale === 'en' ? 'Background & experience' : '背景与经历'}</p><h1>{locale === 'en' ? 'About me' : '关于我'}</h1><p>{b.aboutIntro}</p></header>
+<section class="page-section" id="education"><SectionHeading title={t.education} number="01" /><article class="experience-item"><div class="experience-date"><span>{b.educationPeriod}</span><span>{b.educationStatus}</span></div><div><h3>{b.school}</h3><p class="experience-company">{b.degree}</p><p class="experience-department">{b.educationNote}</p><p class="experience-summary">{b.aboutEducation}</p><div class="related-links"><a href={profile.schoolUrl}>{b.schoolLink} <span aria-hidden="true">↗</span></a><a href={profile.programUrl}>{b.programLink} <span aria-hidden="true">↗</span></a></div></div></article></section>
+<section class="page-section" id="coursework"><SectionHeading title={locale === 'en' ? 'Coursework' : '课程背景'} number="02" link={pathFor(locale, 'coursework')} linkText={locale === 'en' ? 'All coursework' : '全部课程'} /><CourseworkSummary locale={locale} /></section>
+<section class="page-section" id="experience"><SectionHeading title={t.experience} number="03" /><Experience locale={locale} detailed /></section>
+<section class="page-section contact-section" id="contact"><SectionHeading title={t.contact} number="04" /><p>{b.contactIntro}</p><div class="contact-addresses">{profile.emails.map((email) => <a href={`mailto:${email}`}>{email} <span aria-hidden="true">↗</span></a>)}<a href={profile.github}>github.com/szm20060312 <span aria-hidden="true">↗</span></a></div></section>

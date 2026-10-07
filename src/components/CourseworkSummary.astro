@@ -1,0 +1,16 @@
+---
+import { coursework, foundationGroups } from '../data/coursework';
+import { pathFor, type Locale } from '../lib/i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const current = coursework.find((semester) => semester.current)!;
+const courseLookup = new Map(coursework.flatMap((semester) => semester.courses).map((course) => [course.code, course]));
+---
+<div class="coursework-summary">
+  <p class="coursework-intro">{locale === 'en' ? 'My undergraduate coursework spans programming, algorithms, mathematics, computer systems, and web technologies.' : '本科课程背景涵盖编程、算法、数学、计算机系统与 Web 技术。'}</p>
+  <div class="coursework-subheading"><h3>{locale === 'en' ? 'Currently taking' : '当前在修'}</h3><span>{current.title[locale]}</span></div>
+  <ul class="current-course-list">{current.courses.map((course) => <li><span class="course-code">{course.code}</span><span>{course.title[locale]}</span></li>)}</ul>
+  <h3 class="foundation-heading">{locale === 'en' ? 'Earlier coursework' : '过往课程背景'}</h3>
+  <div class="foundation-groups">{foundationGroups.map((group) => <div><h4>{group.title[locale]}</h4><ul>{group.codes.map((code) => <li>{courseLookup.get(code)!.title[locale]}</li>)}</ul></div>)}</div>
+  <a class="text-link" href={pathFor(locale, 'coursework')}>{locale === 'en' ? 'View coursework by semester' : '按学期查看全部课程'} <span aria-hidden="true">↗</span></a>
+</div>

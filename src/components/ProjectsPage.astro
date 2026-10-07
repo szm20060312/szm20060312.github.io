@@ -1,0 +1,13 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { bio } from '../data/profile';
+import { ui, type Locale } from '../lib/i18n';
+import ProjectItem from './ProjectItem.astro';
+import SectionHeading from './SectionHeading.astro';
+interface Props { locale: Locale; entries: CollectionEntry<'projects'>[] }
+const { locale, entries } = Astro.props;
+const t = ui[locale];
+const groups = ['personal', 'course', 'learning'] as const;
+---
+<header class="page-intro"><p class="eyebrow">{locale === 'en' ? 'Software & practice' : '软件与实践'}</p><h1>{t.projects}</h1><p>{bio[locale].projectIntro}</p></header>
+{groups.map((group) => { const items = entries.filter((entry) => entry.data.category === group); return items.length > 0 && <section class="page-section"><SectionHeading title={t[group]} /><div class="project-list">{items.map((entry) => <ProjectItem entry={entry} locale={locale} />)}</div></section>; })}
