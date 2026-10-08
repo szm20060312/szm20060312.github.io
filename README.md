@@ -2,6 +2,8 @@
 
 基于 Astro、TypeScript 和原生 CSS 的个人学术主页，使用 GitHub Pages 发布。英文为默认语言，中文位于 `/zh/`。
 
+视觉设计采用白底与蓝灰文字，英文标题使用本站提供的 Crimson Pro，中文标题和正文使用系统字体回退。字体资源位于 `public/fonts/`，授权见 `CrimsonPro-OFL.txt`。页面包含响应式布局、键盘焦点、较大的操作区域及打印样式。
+
 - 英文主页：[szm20060312.github.io](https://szm20060312.github.io/)
 - 中文主页：[szm20060312.github.io/zh/](https://szm20060312.github.io/zh/)
 

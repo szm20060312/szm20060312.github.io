@@ -14,11 +14,11 @@ const writing = (await getWriting(locale)).slice(0, 3);
 ---
 <section class="hero" aria-labelledby="profile-name">
   <div class="hero-main">
-    <p class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span>{b.eyebrow}</p>
+    <p class="eyebrow">{b.eyebrow}</p>
     <h1 id="profile-name" class="hero-name">{locale === 'en' ? profile.nameEn : profile.name}<span class="secondary-name" lang={locale === 'en' ? 'zh-CN' : 'en'}>{locale === 'en' ? profile.name : 'SONG ZHEMING'}</span></h1>
     <p class="hero-introduction">{b.introduction}</p>
     <p class="hero-practice">{b.practice}</p>
-    <div class="contact-links"><a href={`mailto:${profile.emails[0]}`}>{t.email} (163) <span aria-hidden="true">↗</span></a><a href={`mailto:${profile.emails[1]}`}>{t.email} (Gmail) <span aria-hidden="true">↗</span></a><a href={profile.github}>GitHub <span aria-hidden="true">↗</span></a><a href={profile.resumes[locale]} download>{locale === 'en' ? 'Resume (PDF)' : '简历（PDF）'} <span aria-hidden="true">↓</span></a></div>
+    <div class="contact-links"><a class="download-link" href={profile.resumes[locale]} download>{locale === 'en' ? 'Download resume (PDF)' : '下载简历（PDF）'}</a><a href={`mailto:${profile.emails[0]}`}>{t.email} (163)</a><a href={profile.github} translate="no">GitHub</a><a href={`mailto:${profile.emails[1]}`}>{t.email} (Gmail)</a></div>
   </div>
   <aside class="education-aside" aria-label={t.education}>
     <span class="aside-label">{t.education}</span>
@@ -32,18 +32,18 @@ const writing = (await getWriting(locale)).slice(0, 3);
 </section>
 
 <section class="interests-overview" aria-labelledby="interests-heading">
-  <div class="overview-heading"><h2 id="interests-heading">{t.researchInterests}</h2><a href={pathFor(locale, 'research')} aria-label={locale === 'en' ? 'Explore research interests' : '查看研究兴趣'}><span aria-hidden="true">↗</span></a></div>
-  <div class="interest-columns">{interests[locale].map((interest, index) => <a href={`${pathFor(locale, 'research')}#${interest.id}`} class="interest-summary"><span class="interest-number" aria-hidden="true">0{index + 1}</span><span><strong>{interest.title}</strong><span class="interest-subtitle">{interest.short}</span></span></a>)}</div>
-</section>
-
-<section class="page-section" aria-label={t.selected}>
-  <SectionHeading title={t.selected} number="01" link={pathFor(locale, 'projects')} linkText={t.allProjects} />
-  <div class="project-list">{projects.map((entry) => <ProjectItem entry={entry} locale={locale} />)}</div>
+  <div class="overview-heading"><h2 id="interests-heading">{t.researchInterests}</h2><a class="text-link" href={pathFor(locale, 'research')}>{locale === 'en' ? 'View interests' : '查看兴趣方向'}</a></div>
+  <div class="interest-columns">{interests[locale].map((interest) => <a href={`${pathFor(locale, 'research')}#${interest.id}`} class="interest-summary"><strong>{interest.title}</strong><span class="interest-subtitle">{interest.short}</span></a>)}</div>
 </section>
 
 <section class="page-section" id="experience" aria-label={t.experience}>
-  <SectionHeading title={t.experience} number="02" link={pathFor(locale, 'about#experience')} linkText={t.moreAbout} />
+  <SectionHeading title={t.experience} link={pathFor(locale, 'about#experience')} linkText={t.moreAbout} />
   <Experience locale={locale} />
 </section>
 
-{writing.length > 0 && <section class="page-section" aria-label={t.selectedWriting}><SectionHeading title={t.selectedWriting} number="03" link={pathFor(locale, 'writing')} linkText={t.writing} /><ul class="writing-list">{writing.map((entry) => <li><span>{entry.data.date}</span><a href={pathFor(locale, `writing/${entry.data.slug}`)}>{entry.data.title}</a></li>)}</ul></section>}
+<section class="page-section" aria-label={t.selected}>
+  <SectionHeading title={t.selected} link={pathFor(locale, 'projects')} linkText={t.allProjects} />
+  <div class="project-list">{projects.map((entry) => <ProjectItem entry={entry} locale={locale} />)}</div>
+</section>
+
+{writing.length > 0 && <section class="page-section" aria-label={t.selectedWriting}><SectionHeading title={t.selectedWriting} link={pathFor(locale, 'writing')} linkText={t.writing} /><ul class="writing-list">{writing.map((entry) => <li><span>{entry.data.date}</span><a href={pathFor(locale, `writing/${entry.data.slug}`)}>{entry.data.title}</a></li>)}</ul></section>}

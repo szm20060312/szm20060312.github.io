@@ -6,8 +6,8 @@ export const profile = {
   github: 'https://github.com/szm20060312',
   emails: ['zhemingsong0312@163.com', 'songzheming0312@gmail.com'],
   resumes: {
-    en: '/resume/song-zheming-resume-en.pdf?v=20261008-2',
-    zh: '/resume/song-zheming-resume-zh.pdf?v=20261008-2',
+    en: '/resume/song-zheming-resume-en.pdf?v=20261008-3',
+    zh: '/resume/song-zheming-resume-zh.pdf?v=20261008-3',
   },
   schoolUrl: 'https://www.must.edu.mo/index.html?locale=en_US',
   programUrl: 'https://fie.must.edu.mo/id-1439/program/view/id-211.html?locale=en_US',

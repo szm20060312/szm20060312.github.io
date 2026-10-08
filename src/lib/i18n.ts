@@ -17,7 +17,7 @@ export const ui = {
     skip: 'Skip to content', switchLanguage: '中文', switchLabel: 'Read this page in Chinese',
     selected: 'Selected projects', allProjects: 'All projects', experience: 'Experience',
     researchInterests: 'Research interests', education: 'Education',
-    project: 'Project', code: 'Code', demo: 'Demo', report: 'Report', email: 'Email',
+    project: 'Project details', code: 'Source code', demo: 'Demo', report: 'Report', email: 'Email',
     personallyLed: 'Personally led', projectNotes: 'Project notes',
     backProjects: 'Back to all projects', backWriting: 'Back to all writing',
     related: 'Related work', contact: 'Contact', technologies: 'Technologies',

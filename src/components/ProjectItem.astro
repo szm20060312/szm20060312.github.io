@@ -6,10 +6,13 @@ const { entry, locale } = Astro.props;
 const data = entry.data;
 const t = ui[locale];
 ---
-<article class="project-item">
+<article class="project-item" aria-labelledby={`project-${data.slug}`}>
+  <div class="project-item-heading">
+    <h3 id={`project-${data.slug}`}><a href={pathFor(locale, `projects/${data.slug}`)}>{data.title}</a></h3>
+    <p class="project-meta"><span>{data.kind}</span><span>{data.role}</span></p>
+    <ul class="project-technologies" aria-label={t.technologies}>{data.tags.map((tag) => <li translate="no">{tag}</li>)}</ul>
+  </div>
   <div class="project-item-body">
-    <p class="project-meta">{data.kind}<span aria-hidden="true"> · </span>{data.role}</p>
-    <h3><a href={pathFor(locale, `projects/${data.slug}`)}>{data.title}</a></h3>
     <p class="project-summary">{data.summary}</p>
     <div class="project-resources">
       <a href={pathFor(locale, `projects/${data.slug}`)}>{t.project} <span aria-hidden="true">↗</span></a>
