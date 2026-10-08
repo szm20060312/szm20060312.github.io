@@ -5,6 +5,10 @@ export const profile = {
   nameEn: 'SONG ZHEMING',
   github: 'https://github.com/szm20060312',
   emails: ['zhemingsong0312@163.com', 'songzheming0312@gmail.com'],
+  resumes: {
+    en: '/resume/song-zheming-resume-en.pdf',
+    zh: '/resume/song-zheming-resume-zh.pdf',
+  },
   schoolUrl: 'https://www.must.edu.mo/index.html?locale=en_US',
   programUrl: 'https://fie.must.edu.mo/id-1439/program/view/id-211.html?locale=en_US',
   reviewed: '2026-10-07',
@@ -39,7 +43,7 @@ export const bio = {
       'Contributed to model adaptation, functional testing, regression examples, and technical documentation.',
     ],
     contactIntro: 'For academic exchange, project discussions, or collaboration, you can reach me by email.',
-    aboutEducation: 'I entered the Bachelor of Science programme in 2024, majoring in Computer Science. I am currently in my third year and expect to graduate in 2028. The programme is primarily taught in English. My current coursework includes software engineering, operating systems, computer networks, and Computer Graphics as an elective.',
+    aboutEducation: 'I entered the Bachelor of Science programme in 2024, majoring in Computer Science. I am currently in my third year and expect to graduate in 2028. The programme is primarily taught in English. My current coursework includes software engineering, operating systems, computer networks, and Computer Graphics.',
   },
   zh: {
     eyebrow: '计算机科学本科生',
@@ -68,15 +72,15 @@ export const bio = {
       '参与模型适配、功能测试、回归样例与技术文档整理。',
     ],
     contactIntro: '欢迎通过邮箱交流学习、项目实践与合作想法。',
-    aboutEducation: '2024 年进入澳门科技大学理学学士课程，主修计算机科学。目前大三在读，预计于 2028 年毕业。本科主要以英文授课。本学期在修课程包括软件工程、操作系统、计算机网络，以及选修课程《计算机图形学》。',
+    aboutEducation: '2024 年进入澳门科技大学理学学士课程，主修计算机科学。目前大三在读，预计于 2028 年毕业。本科主要以英文授课。本学期在修课程包括软件工程、操作系统、计算机网络和计算机图形学。',
   },
 } satisfies Record<Locale, object>;
 
 export const interests = {
   en: [
     {
-      id: 'graphics', title: 'Computer graphics', short: 'Undergraduate elective · In progress',
-      description: 'I am currently taking Computer Graphics as an undergraduate elective. My notes so far cover an introduction to graphics, linear algebra and vector calculus, rasterization and sampling, and spatial transformations, including homogeneous coordinates, perspective projection, and scene graphs.',
+      id: 'graphics', title: 'Computer graphics', short: 'Coursework · In progress',
+      description: 'I am currently taking Computer Graphics. My notes so far cover an introduction to graphics, linear algebra and vector calculus, rasterization and sampling, and spatial transformations, including homogeneous coordinates, perspective projection, and scene graphs.',
       related: [],
     },
     {
@@ -92,8 +96,8 @@ export const interests = {
   ],
   zh: [
     {
-      id: 'graphics', title: '计算机图形学', short: '本科选修 · 正在修读',
-      description: '我正在修读本科选修课程《计算机图形学》。目前笔记覆盖图形学导论、线性代数与向量微积分、光栅化与采样、空间变换，包括齐次坐标、透视投影和场景图等内容。',
+      id: 'graphics', title: '计算机图形学', short: '课程学习 · 正在修读',
+      description: '我正在修读计算机图形学。目前笔记覆盖图形学导论、线性代数与向量微积分、光栅化与采样、空间变换，包括齐次坐标、透视投影和场景图等内容。',
       related: [],
     },
     {
