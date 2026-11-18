@@ -8,7 +8,7 @@ draft: false
 category: "personal"
 role: "Personally led"
 kind: "Native macOS application"
-order: 4
+order: 3
 tags: ["Swift 6", "SwiftUI", "AppKit", "Swift Charts"]
 links: [{"kind": "code", "url": "https://github.com/szm20060312/FloatMonitor"}]
 source: "https://github.com/szm20060312/FloatMonitor/blob/main/README.md"
@@ -17,16 +17,18 @@ featuredOrder: 4
 
 ## Overview
 
-A personally led native macOS utility for viewing system activity. It combines a compact menu-bar display with a popover and desktop window for more detailed information.
+A personally led native macOS utility for monitoring real-time system activity, pairing a compact menu-bar status item with an expandable popover and a pinnable desktop dashboard window.
 
-## Implementation
+## Architecture and implementation
 
-The application uses Swift, SwiftUI, AppKit, and Swift Charts. System-monitoring services collect CPU, memory, GPU, and network information, while interface components present summaries and histories. Settings control the refresh interval, display style, and window behavior.
+The interface combines AppKit (`NSStatusBar` and `NSPopover`) with SwiftUI views and Swift Charts (`LineMark` and `AreaMark`) for live network history. In compact two-line mode, the menu-bar item pre-computes fixed `100%` placeholder widths so fluctuating readings never cause neighboring menu-bar icons to shift.
+
+Telemetry services query macOS system interfaces directly without spawning shell subprocesses: Mach `host_processor_info` (`PROCESSOR_CPU_LOAD_INFO`) for aggregate and per-core CPU load, `host_statistics64` and `sysctl` for memory usage and pressure, `getifaddrs` interface counters for delta upload and download rates, IOKit `IOAccelerator` performance statistics for Apple Silicon GPU utilization, and AppleSMC struct calls with multi-sensor averaging and sanity filtering for CPU temperature. Preferences support 0.5s–5s refresh intervals, unit toggling, `SMAppService` launch-at-login, and custom `.app` and `.dmg` packaging via Swift Package Manager.
 
 ## My contribution
 
-I led development of the application, including system-data integration, native interface behavior, settings, and application packaging.
+I led the application architecture and implementation, including low-level macOS telemetry integration, native menu-bar and multi-window UI behavior, settings persistence, and packaging scripts.
 
 ## Platform scope
 
-This is a macOS application. Supported operating-system versions and hardware-dependent measurements are documented in the repository; availability of a sensor depends on the platform. See the source and build instructions for details.
+FloatMonitor targets macOS; supported OS versions and hardware-specific sensor availability across Apple Silicon and Intel Macs are documented in the source repository.

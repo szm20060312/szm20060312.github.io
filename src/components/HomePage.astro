@@ -9,6 +9,7 @@ interface Props { locale: Locale }
 const { locale } = Astro.props;
 const b = bio[locale];
 const t = ui[locale];
+const orderedEmails = locale === 'en' ? [profile.emails[1], profile.emails[0]] : profile.emails;
 const projects = (await getProjects(locale)).filter((entry) => entry.data.featuredOrder).sort((a, b) => a.data.featuredOrder! - b.data.featuredOrder!);
 const writing = (await getWriting(locale)).slice(0, 3);
 ---
@@ -18,7 +19,8 @@ const writing = (await getWriting(locale)).slice(0, 3);
     <h1 id="profile-name" class="hero-name">{locale === 'en' ? profile.nameEn : profile.name}<span class="secondary-name" lang={locale === 'en' ? 'zh-CN' : 'en'}>{locale === 'en' ? profile.name : 'SONG ZHEMING'}</span></h1>
     <p class="hero-introduction">{b.introduction}</p>
     <p class="hero-practice">{b.practice}</p>
-    <div class="contact-links"><a class="download-link" href={profile.resumes[locale]} download>{locale === 'en' ? 'Download resume (PDF)' : '下载简历（PDF）'}</a><a href={`mailto:${profile.emails[0]}`}>{t.email} (163)</a><a href={profile.github} translate="no">GitHub</a><a href={`mailto:${profile.emails[1]}`}>{t.email} (Gmail)</a></div>
+    <div class="contact-links"><a class="download-link" href={profile.resumes[locale]} download>{locale === 'en' ? 'Download resume (PDF)' : '下载简历（PDF）'}</a><a href={profile.github} translate="no">GitHub <span aria-hidden="true">↗</span></a></div>
+    <div class="hero-emails" aria-label={t.email}>{orderedEmails.map((email) => <a href={`mailto:${email}`}>{email}</a>)}</div>
   </div>
   <aside class="education-aside" aria-label={t.education}>
     <span class="aside-label">{t.education}</span>
@@ -26,13 +28,13 @@ const writing = (await getWriting(locale)).slice(0, 3);
     <p>{b.degree}</p>
     <p class="aside-period">{b.educationPeriod}</p>
     <div class="aside-details"><span>{b.educationStatus}</span><span>{b.teaching}</span></div>
-    <a class="text-link" href={pathFor(locale, 'about')}>{t.moreAbout}<span aria-hidden="true"> ↗</span></a>
-    <a class="text-link coursework-home-link" href={pathFor(locale, 'about#coursework')}>{locale === 'en' ? 'Coursework' : '课程背景'}<span aria-hidden="true"> ↗</span></a>
+    <a class="text-link" href={pathFor(locale, 'about')}>{t.moreAbout}<span aria-hidden="true"> →</span></a>
+    <a class="text-link coursework-home-link" href={pathFor(locale, 'about#coursework')}>{locale === 'en' ? 'Coursework' : '课程背景'}<span aria-hidden="true"> →</span></a>
   </aside>
 </section>
 
 <section class="interests-overview" aria-labelledby="interests-heading">
-  <div class="overview-heading"><h2 id="interests-heading">{t.researchInterests}</h2><a class="text-link" href={pathFor(locale, 'research')}>{locale === 'en' ? 'View interests' : '查看兴趣方向'}</a></div>
+  <div class="overview-heading"><h2 id="interests-heading">{t.researchInterests}</h2><a class="text-link" href={pathFor(locale, 'research')}>{locale === 'en' ? 'View interests' : '查看兴趣方向'}<span aria-hidden="true"> →</span></a></div>
   <div class="interest-columns">{interests[locale].map((interest) => <a href={`${pathFor(locale, 'research')}#${interest.id}`} class="interest-summary"><strong>{interest.title}</strong><span class="interest-subtitle">{interest.short}</span></a>)}</div>
 </section>
 

@@ -12,21 +12,23 @@ order: 1
 tags: ["Tauri 2", "TypeScript", "Rust", "Desktop interaction"]
 links: [{"kind": "code", "url": "https://github.com/szm20060312/march-7th-desktop-pet"}]
 source: "https://github.com/szm20060312/march-7th-desktop-pet/blob/main/README.md"
-featuredOrder: 1
+featuredOrder: 2
 ---
 
 ## Overview
 
-A personally led desktop companion project for macOS and Windows. The application brings an animated character into a transparent, frameless desktop window, with interaction driven by the real system cursor and window movement.
+A personally led cross-platform desktop companion for macOS and Windows. The character runs inside a transparent, frameless, always-on-top window and responds continuously to real system cursor positions and window dragging.
 
-## Implementation
+## Architecture and implementation
 
-The application combines a TypeScript frontend with Rust and Tauri 2. Its interaction states coordinate idle animation, sixteen look directions, and left or right running animations while the window is dragged. Tracking resumes after movement stops.
+The codebase separates pure domain logic (`PetModel` and sprite-atlas coordinate math) from runtime scheduling, Tauri IPC calls, and DOM updates behind narrow interfaces. A TypeScript AST boundary checker (`check-architecture`) runs in CI to prevent host globals or circular dependencies from leaking into the domain layer.
+
+OS-specific cursor and logical window coordinate conversion is isolated in the Rust platform layer and polled sequentially with a 33 ms delay after each IPC round-trip so calls never pile up. Driven by an injected monotonic clock (`performance.now()`), the state machine enforces `moving > gaze > idle` priority: dragging triggers directional running animations while suppressing cursor-gaze updates, and holds a 160 ms post-movement cooldown before resuming 16-direction gaze tracking to prevent eye jitter. The DOM view updates sprite coordinates only when the active frame index changes.
 
 ## My contribution
 
-I led the project and its development, including interaction behavior, platform adaptation, and the organization of implementation and validation documentation.
+I led the architectural refactoring and cross-platform implementation, designing the animation state machine, cursor-sampling IPC contract, AST boundary checks, unit tests, and platform validation records.
 
 ## Current scope
 
-The documented application includes idle animation, cursor tracking, and drag behavior. Multiple characters, contextual messages, and reminders are planned extensions. The repository records platform validation for macOS Apple Silicon and Windows x64; the scope and evidence are described in its documentation.
+The current stable release (`v0.2.0`) covers six-frame idle playback, 16-direction cursor gaze, and drag running animations, validated on macOS Apple Silicon and Windows 10/11 x64 across 100%, 150%, and 200% DPI scaling. Multi-character switching, contextual lines, and a Rust-owned reminder and persistence engine are documented as planned modules.

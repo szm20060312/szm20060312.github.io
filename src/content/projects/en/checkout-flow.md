@@ -3,7 +3,7 @@ locale: "en"
 slug: "checkout-flow"
 translationKey: "checkout-flow"
 title: "Checkout Flow"
-summary: "A static form exercise exploring field organization, browser interaction, and checks for page structure and submission behavior."
+summary: "A static form and automated-testing exercise organizing grouped checkout fields and verifying HTTP submission parameters."
 draft: false
 category: "learning"
 role: "Personally led"
@@ -16,8 +16,8 @@ source: "https://github.com/szm20060312/checkout-flow/blob/main/README.md"
 
 ## Overview
 
-A personally led frontend exercise with grouped form fields and a simple browser interaction flow.
+A personally led frontend and automated-testing exercise structured around semantic form grouping, browser input controls, and parameter verification.
 
 ## Practice
 
-The repository contains an HTML page, CSS, JavaScript practice, and a Node.js test script that checks the static page and submission parameters. It is a learning exercise, not a live payment system.
+The static page organizes 15 form controls across four `<fieldset>` sections (shipping, billing, card details, and contact preferences) with `GET` query-string submission and reset actions. It is paired with a zero-dependency Node.js verification script (`checkout-test.js`) that starts an ephemeral local HTTP server to assert status codes, DOM field completeness, card-type options, static assets, and URL-encoded submission parameters. It is presented strictly as a frontend and testing exercise rather than a live payment system.

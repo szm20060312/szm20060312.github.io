@@ -55,6 +55,14 @@ for (const relative of ['coursework/index.html', 'zh/coursework/index.html']) {
   }
 }
 
+for (const required of ['sitemap.xml', 'robots.txt', 'og-card.png']) {
+  try {
+    await access(path.join(root, required));
+  } catch {
+    issues.push(`Missing required root asset: ${required}`);
+  }
+}
+
 if (issues.length) {
   console.error(issues.join('\n'));
   process.exitCode = 1;

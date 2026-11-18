@@ -106,6 +106,8 @@ src/
   components/              首页、项目、经历及相关组件
   layouts/SiteLayout.astro 公共布局、导航和页面元信息
   pages/[...path].astro    统一生成双语静态路由
+  pages/sitemap.xml.ts     双语站点地图（含 hreflang 关联）
+  pages/robots.txt.ts      搜索引擎抓取规则
   pages/404.astro          错误页
   styles/global.css        排版、颜色与响应式布局
 scripts/check-build.mjs   构建产物检查

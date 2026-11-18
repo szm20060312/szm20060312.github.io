@@ -3,29 +3,33 @@ locale: "en"
 slug: "classformer"
 translationKey: "classformer"
 title: "ClassFormer"
-summary: "A course-project concept for following English-taught lectures, bookmarking unclear moments, and revisiting audio, subtitles, and slides together."
+summary: "A lecture-assistance project for English-taught courses, combining structured PDF slide parsing, sequential page tracking, and synchronized bilingual review."
 draft: false
 category: "course"
 role: "Personally led"
-kind: "Course project · Concept demo"
+kind: "Course project"
 order: 5
-tags: ["HTML", "CSS", "JavaScript", "Audio interaction"]
+featuredOrder: 1
+tags: ["Python", "PyMuPDF", "JavaScript", "Slide retrieval"]
 links: [{"kind": "code", "url": "https://github.com/szm20060312/ClassFormer-website"}]
 source: "https://github.com/szm20060312/ClassFormer-website/blob/main/README.md"
 ---
 
 ## Overview
 
-A personally led course-project presentation developed in a three-person team context. ClassFormer explores how to keep lecture audio, bilingual subtitles, slides, and questions in the same context.
+A personally led Software Engineering course project developed in a three-person team context. ClassFormer targets English-taught university lectures, exploring how lecture audio, bilingual subtitles, PDF slide tracking, and student review bookmarks can stay anchored in a single context.
 
-## Interaction prototype
+## Module progress and prototype
 
-The website plays a prepared English lecture sample. Audio timing drives predefined subtitles and slide changes. A listener can bookmark an unclear moment and later replay the corresponding audio with its related text and slide.
+Development is organized across a backend slide-processing pipeline and a public classroom interaction prototype:
+
+- **Slide parsing and page-tracking pipeline (ongoing course development)**: built a Python and PyMuPDF (`pdf_parser`) module that converts lecture PDFs into structured per-page JSON preserving native text blocks, bounding coordinates, image regions, and page thumbnails. It applies a `native-text-first` selective OCR fallback only on text-sparse diagram pages, and supports sequential context-aware page tracking alongside offline experiments on dual-channel retrieval and recommendation confirmation.
+- **Classroom interaction prototype (public repository)**: uses a prepared English lecture audio sample to drive synchronized bilingual subtitles and slide transitions, allowing listeners to bookmark unclear moments during class and jump back to the exact audio timestamp, transcript segment, and slide afterward.
 
 ## My contribution
 
-I led the project work presented here. Its course context, collaborative scope, requirements, and future implementation are documented in the repository.
+I led the overall system design, the public web prototype, and the implementation and evaluation documentation for the PDF parsing and sequential slide-tracking modules.
 
-## Demonstration boundary
+## Public scope and boundary
 
-The demonstration uses prepared content and timing. Live speech recognition, translation, and automatic slide matching are planned product functions and are not connected in this prototype. The source repository describes the implemented interaction and local preview setup.
+Full course engineering and experimental code are maintained in a private repository; the linked public repository (`ClassFormer-website`) hosts the static interactive classroom prototype and project specification. End-to-end live speech streaming and learned semantic embeddings remain planned integration steps.

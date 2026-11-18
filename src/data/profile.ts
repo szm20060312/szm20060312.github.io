@@ -11,7 +11,7 @@ export const profile = {
   },
   schoolUrl: 'https://www.must.edu.mo/index.html?locale=en_US',
   programUrl: 'https://fie.must.edu.mo/id-1439/program/view/id-211.html?locale=en_US',
-  reviewed: '2026-10-07',
+  reviewed: '2026-11-18',
   internship: { start: '2026-07-01', end: '2026-07-30' },
 };
 
@@ -81,12 +81,12 @@ export const interests = {
     {
       id: 'graphics', title: 'Computer graphics', short: 'Coursework · In progress',
       description: 'I am currently taking Computer Graphics. My notes so far cover an introduction to graphics, linear algebra and vector calculus, rasterization and sampling, and spatial transformations, including homogeneous coordinates, perspective projection, and scene graphs.',
-      related: [],
+      related: [{ title: 'Autumn 2026 coursework (CS440)', path: 'coursework#term-2609' }],
     },
     {
       id: 'learning', title: 'Machine learning', short: 'Learning-based methods',
       description: 'I want to explore learning-based methods and their applications in interactive systems. My current experience includes foundational study and practical LLM application development, such as knowledge retrieval and conversational workflows.',
-      related: [{ title: 'AI application internship', path: 'about#experience' }],
+      related: [{ title: 'AI application internship', path: 'about#experience' }, { title: 'ClassFormer', path: 'projects/classformer' }],
     },
     {
       id: 'games', title: 'AI in games', short: 'Intelligent, interactive experiences',
@@ -98,12 +98,12 @@ export const interests = {
     {
       id: 'graphics', title: '计算机图形学', short: '课程学习 · 正在修读',
       description: '我正在修读计算机图形学。目前笔记覆盖图形学导论、线性代数与向量微积分、光栅化与采样、空间变换，包括齐次坐标、透视投影和场景图等内容。',
-      related: [],
+      related: [{ title: '2026 年秋季在修课程（CS440）', path: 'coursework#term-2609' }],
     },
     {
       id: 'learning', title: '机器学习', short: '基于学习的方法',
       description: '希望探索机器学习方法及其在交互系统中的应用。目前的经历包括基础理论学习，以及知识库检索、对话工作流等大模型应用开发实践。',
-      related: [{ title: 'AI 应用开发实习', path: 'about#experience' }],
+      related: [{ title: 'AI 应用开发实习', path: 'about#experience' }, { title: 'ClassFormer', path: 'projects/classformer' }],
     },
     {
       id: 'games', title: '游戏中的人工智能', short: '智能化的交互体验',

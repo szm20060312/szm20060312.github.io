@@ -8,25 +8,26 @@ draft: false
 category: "personal"
 role: "个人主导"
 kind: "AI 应用 · 游戏"
-order: 3
-tags: ["JavaScript", "Node.js", "Express", "LLM APIs"]
+order: 4
+tags: ["JavaScript", "Node.js", "Express", "大模型 API"]
 links: [{"kind": "code", "url": "https://github.com/szm20060312/ai-emoji-idiom-game"}]
 source: "https://github.com/szm20060312/ai-emoji-idiom-game/blob/main/README.md"
-featuredOrder: 3
 ---
 
 ## 项目概述
 
-我个人主导的网页猜谜游戏。玩家根据 Emoji 组合推断四字成语，后端调用语言模型生成谜题，浏览器提供提示、倒计时与分数反馈。
+我个人主导的网页猜谜游戏。后端实时调用大语言模型生成由 Emoji 组成的谜面，玩家在限时内推断对应的常用四字成语。
 
-## 实现思路
+## 架构与实现
 
-JavaScript 前端配合 Node.js 与 Express 后端。提示词约束谜题格式和答案，并加入已有答案以减少重复。后端实现了 DeepSeek、OpenAI 和 Anthropic 的调用路径。
+项目采用原生 JavaScript 前端配合 Node.js 与 Express 服务端代理，在统一出题接口下封装了 DeepSeek、OpenAI 与 Anthropic 三条模型调用路径。提示词构建模块每次随机抽取种子成语引导多样性，约束模型输出 4–6 个表意 Emoji、常用四字成语谜底及严格 JSON 结构，并将当前会话已出题目写入硬性排除列表，配合 JSON 提取校验与重试逻辑降低重复出题率。
+
+浏览器交互层实现每题 40 秒倒计时、三级渐进文字提示（依次揭示首字、末字、前两字）、连击加分，以及基于 `localStorage` 按玩家保留最高分的本地排行榜。
 
 ## 我的工作
 
-主导项目并使用 AI 辅助开发，从游戏需求、提示词设计到模型 API 集成和浏览器交互，探索 AI 与游戏的实际结合。
+主导项目需求与交互设计，采用 AI 辅助编程完成提示词约束、多模型 API 适配、防重复出题逻辑及前端游戏循环开发。
 
 ## 当前范围
 
-这是调用已有语言模型的应用实践。生成新谜题需要配置后端和模型服务，不属于自行训练模型的项目。源码仓库提供本地运行说明。
+本项目属于调用托管大语言模型 API 的应用实践，不涉及自行训练模型。生成新谜题需在本地或服务端配置对应的模型密钥，运行说明见源码仓库。

@@ -15,7 +15,8 @@ interface Props {
 const { locale, title, description, active, alternateHref, isNotFound = false } = Astro.props;
 const t = ui[locale];
 const name = locale === 'en' ? profile.nameEn : profile.name;
-const pageTitle = title ? `${title} · ${name}` : `${name} · Computer Science`;
+const pageTitle = title ? `${title} · ${name}` : `${name} · ${locale === 'en' ? 'Computer Science' : '计算机科学'}`;
+const primaryEmail = locale === 'en' ? profile.emails[1] : profile.emails[0];
 const currentPath = Astro.url.pathname.replace(/^\/zh(?=\/|$)/, '').replace(/^\/+|\/+$/g, '');
 const alternate = alternateHref ?? pathFor(otherLocale(locale), currentPath);
 const hasWriting = (await getWriting(locale)).length > 0;
@@ -30,7 +31,22 @@ const site = Astro.site ?? new URL('http://localhost:4321');
 const canonical = new URL(Astro.url.pathname, site);
 const english = locale === 'en' ? canonical : new URL(alternate, site);
 const chinese = locale === 'zh' ? canonical : new URL(alternate, site);
+const ogImage = new URL('/og-card.png', site);
 const isPublicBuild = !['localhost', '127.0.0.1'].includes(site.hostname);
+const personSchema = active === 'home' && !title && !isNotFound ? JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.nameEn,
+  alternateName: [profile.name, 'Song Zheming'],
+  url: canonical.toString(),
+  sameAs: [profile.github],
+  email: profile.emails,
+  affiliation: {
+    '@type': 'CollegeOrUniversity',
+    name: 'Macau University of Science and Technology',
+    url: profile.schoolUrl,
+  },
+}) : undefined;
 ---
 <!doctype html>
 <html lang={locale === 'en' ? 'en' : 'zh-CN'}>
@@ -50,10 +66,18 @@ const isPublicBuild = !['localhost', '127.0.0.1'].includes(site.hostname);
       <link rel="alternate" hreflang="x-default" href={english} />
     </>}
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={locale === 'en' ? 'Song Zheming' : '宋哲铭'} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={locale === 'en' ? 'en_US' : 'zh_CN'} />
+    {!isNotFound && <meta property="og:locale:alternate" content={locale === 'en' ? 'zh_CN' : 'en_US'} />}
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={locale === 'en' ? 'Song Zheming · Computer Science' : '宋哲铭 · 计算机科学'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {personSchema && <script is:inline type="application/ld+json" set:html={personSchema} />}
   </head>
   <body>
     <a class="skip-link" href="#main">{t.skip}</a>
@@ -72,7 +96,7 @@ const isPublicBuild = !['localhost', '127.0.0.1'].includes(site.hostname);
       <main id="main" tabindex="-1"><slot /></main>
       <footer class="site-footer">
         <div><span class="footer-name">{t.copyright}</span><p>{t.footer}</p></div>
-        <div class="footer-links"><a href={`mailto:${profile.emails[0]}`}>{t.email}</a><a href={profile.github}>GitHub <span aria-hidden="true">↗</span></a><a href={pathFor(locale, 'about')}>{t.about}</a></div>
+        <div class="footer-links"><a href={`mailto:${primaryEmail}`} title={primaryEmail}>{t.email}</a><a href={profile.github}>GitHub <span aria-hidden="true">↗</span></a><a href={pathFor(locale, 'about')}>{t.about}</a></div>
       </footer>
     </div>
   </body>

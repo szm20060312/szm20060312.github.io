@@ -12,5 +12,5 @@ const courseLookup = new Map(coursework.flatMap((semester) => semester.courses).
   <ul class="current-course-list">{current.courses.map((course) => <li><span class="course-code">{course.code}</span><span>{course.title[locale]}</span></li>)}</ul>
   <h3 class="foundation-heading">{locale === 'en' ? 'Earlier coursework' : '过往课程背景'}</h3>
   <div class="foundation-groups">{foundationGroups.map((group) => <div><h4>{group.title[locale]}</h4><ul>{group.codes.map((code) => <li>{courseLookup.get(code)!.title[locale]}</li>)}</ul></div>)}</div>
-  <a class="text-link" href={pathFor(locale, 'coursework')}>{locale === 'en' ? 'View coursework by semester' : '按学期查看全部课程'} <span aria-hidden="true">↗</span></a>
+  <a class="text-link" href={pathFor(locale, 'coursework')}>{locale === 'en' ? 'View coursework by semester' : '按学期查看全部课程'} <span aria-hidden="true">→</span></a>
 </div>

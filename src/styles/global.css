@@ -7,13 +7,6 @@
   font-style: normal;
   font-display: swap;
 }
-@font-face {
-  font-family: "Crimson Pro";
-  src: url("/fonts/crimson-pro-bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
 
 :root {
   color-scheme: light;
@@ -70,6 +63,9 @@ section[id], h2[id], h3[id] { scroll-margin-top: 24px; }
 .contact-links .download-link { padding: 10px 16px; background: var(--ink); color: var(--paper); border: 1px solid var(--ink); border-radius: 3px; font-weight: 500; }
 .contact-links .download-link:hover { background: var(--link); border-color: var(--link); text-decoration: none; }
 .download-link:focus-visible { outline-offset: 5px; }
+.hero-emails { display: flex; flex-wrap: wrap; gap: 4px 20px; margin-top: 8px; font-size: 14px; }
+.hero-emails a { display: inline-flex; align-items: center; min-height: 44px; max-width: 100%; overflow-wrap: anywhere; text-decoration: none; }
+.hero-emails a:hover { text-decoration: underline; }
 .education-aside { border-top: 1px solid var(--line); padding-top: 24px; font-size: 14px; }
 .aside-label { display: block; color: var(--muted); font-size: 13px; margin-bottom: 12px; }
 .aside-school { color: var(--heading); font: 400 25px/1.35 var(--serif); margin-bottom: 14px; max-width: 310px; }
@@ -228,7 +224,7 @@ section[id], h2[id], h3[id] { scroll-margin-top: 24px; }
   .hero-name { font-size: 28pt; }
   .education-aside { border: 0; padding: 16px 0 0; }
   .contact-links .download-link { background: none; color: #000; border: 0; padding: 0; }
-  .contact-links a, .text-link, .related-links a, .project-resources a { min-height: 0; }
+  .contact-links a, .hero-emails a, .text-link, .related-links a, .project-resources a { min-height: 0; }
   .page-section { padding-top: 24px; }
   .section-heading, .semester-heading { break-after: avoid; }
   h1, h2, h3 { break-after: avoid; }

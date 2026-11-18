@@ -15,7 +15,7 @@ const t = ui[locale];
   <div class="project-item-body">
     <p class="project-summary">{data.summary}</p>
     <div class="project-resources">
-      <a href={pathFor(locale, `projects/${data.slug}`)}>{t.project} <span aria-hidden="true">↗</span></a>
+      <a href={pathFor(locale, `projects/${data.slug}`)}>{t.project} <span aria-hidden="true">→</span></a>
       {data.links.map((link) => <a href={link.url}>{t[link.kind]} <span aria-hidden="true">↗</span></a>)}
     </div>
   </div>
